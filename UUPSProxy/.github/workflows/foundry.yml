@@ -1,0 +1,28 @@
+name: Foundry CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Foundry
+        run: |
+          curl -L https://foundry.paradigm.xyz | bash
+          source ~/.bashrc
+          foundryup
+
+      - name: Build contracts
+        run: forge build
+
+      - name: Run tests
+        run: forge test --verbosity 3
+
